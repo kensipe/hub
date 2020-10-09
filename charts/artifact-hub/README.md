@@ -35,6 +35,14 @@ The chart installs one `cronjob` in charge of launching periodically (every 30m)
 $ kubectl create job initial-tracker-job --from=cronjob/tracker
 ```
 
+## Packages security reports
+
+The chart installs another `cronjob` in charge of launching periodically (every hour) the scanner, which scans packages' images for security vulnerabilities, generating security reports for them. If you don't want to wait until the job is triggered by the cronjob, you can create one manually using the following command:
+
+```bash
+$ kubectl create job initial-scanner-job --from=cronjob/scanner
+```
+
 ## Uninstalling the Chart
 
 To uninstall the `hub` deployment run:
@@ -60,6 +68,8 @@ The following table lists the configurable parameters of the Artifact Hub chart 
 | `db.database`                          | Database name                      | `hub`                                      |
 | `db.user`                              | Database user                      | `postgres`                                 |
 | `db.password`                          | Database password                  | `postgres`                                 |
+| `dbMigrator.job.image.repository`      | DB migrator image repository       | `artifacthub/db-migrator`                  |
+| `dbMigrator.loadSampleData`            | Load demo user and sample repos    | `true`                                     |
 | `hub.ingress.enabled`                  | Enable Hub ingress                 | `true`                                     |
 | `hub.ingress.annotations`              | Hub ingress annotations            | `{kubernetes.io/ingress.class: nginx}`     |
 | `hub.service.type`                     | Hub service type                   | `NodePort`                                 |
@@ -94,8 +104,9 @@ The following table lists the configurable parameters of the Artifact Hub chart 
 | `hub.email.smtp.username`              | SMTP username                      |                                            |
 | `hub.email.smtp.password`              | SMTP password                      |                                            |
 | `hub.analytics.gaTrackingID`           | Google Analytics tracking id       |                                            |
-| `dbMigrator.job.image.repository`      | DB migrator image repository       | `artifacthub/db-migrator`                  |
-| `dbMigrator.loadSampleData`            | Load demo user and sample repos    | `true`                                     |
+| `scanner.cronjob.image.repository`     | Scanner image repository           | `artifacthub/scanner`                      |
+| `scanner.cronjob.resources`            | Scanner requested resources        | Memory: `500Mi`, CPU: `100m`               |
+| `scanner.concurrency`                  | Snapshots to process concurrently  | 10                                         |
 | `tracker.cronjob.image.repository`     | Tracker image repository           | `artifacthub/tracker`                      |
 | `tracker.cronjob.resources`            | Tracker requested resources        | Memory: `500Mi`, CPU: `100m`               |
 | `tracker.concurrency`                  | Repos to process concurrently      | 10                                         |

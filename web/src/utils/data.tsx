@@ -15,6 +15,7 @@ import {
   RepositoryKind,
   SearchTipItem,
   TsQuery,
+  VulnerabilitySeverity,
 } from '../types';
 
 export interface SubscriptionItem {
@@ -307,3 +308,19 @@ export const SEARH_TIPS: SearchTipItem[] = [
     example: 'postgresql or mysql',
   },
 ];
+
+export const SEVERITY_ORDER = [
+  VulnerabilitySeverity.Critical,
+  VulnerabilitySeverity.High,
+  VulnerabilitySeverity.Medium,
+  VulnerabilitySeverity.Low,
+  VulnerabilitySeverity.UnKnown,
+];
+
+export const SEVERITY_COLORS = {
+  [VulnerabilitySeverity.Critical]: '#B20303',
+  [VulnerabilitySeverity.High]: '#ff5152',
+  [VulnerabilitySeverity.Medium]: '#ffb760',
+  [VulnerabilitySeverity.Low]: '#ffe258',
+  [VulnerabilitySeverity.UnKnown]: '#b2b2b2',
+};
